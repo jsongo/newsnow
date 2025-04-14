@@ -1,6 +1,18 @@
-import { defineConfig, presetIcons, presetWind3, transformerDirectives, transformerVariantGroup } from "unocss"
+import fs from "node:fs"
+import path from "node:path"
+import { fileURLToPath } from "node:url"
 import { hex2rgba } from "@unocss/rule-utils"
-import { sources } from "./shared/sources"
+import { defineConfig, presetIcons, presetWind3, transformerDirectives, transformerVariantGroup } from "unocss"
+
+// Get the directory name of the current module
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// Read the JSON file directly
+const sourcesPath = path.resolve(__dirname, "./shared/sources.json")
+const sourcesContent = fs.readFileSync(sourcesPath, "utf-8")
+// Add type assertion to fix TypeScript error
+const sources = JSON.parse(sourcesContent) as Record<string, { color: string, [key: string]: any }>
 
 export default defineConfig({
   mergeSelectors: false,
